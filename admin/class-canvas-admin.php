@@ -100,4 +100,63 @@ class Canvas_Admin {
 
   }
 
+    /**
+   * Register the plugin options page.
+   *
+   * @since    1.0.0
+   */
+  public function add_options_page() {
+
+    add_options_page( 
+      'Canvas Gallery Setup', 
+      'Canvas', 
+      'manage_options', 
+      $this->plugin_name, 
+      array( $this, 'display_plugin_setup_page' )
+    );
+
+  }
+
+  /**
+   *
+   * Add settings link to plugins list
+   *
+   *  @since  1.0.0
+   */
+  public function add_action_links( $links ) {
+
+    $settings_link = array(
+      '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_name ) . '">' . __('Settings', $this->plugin_name) . '</a>',
+    );
+    return array_merge(  $settings_link, $links );
+
+  }
+
+  /**
+   * Render the settings page for the plugin.
+   *
+   * @since    1.0.0
+   */
+  public function display_plugin_setup_page() {
+    include_once( 'partials/canvas-admin-display.php' );
+  }
+
+  /**
+   * Add custom post type
+   *
+   * @since    1.0.0
+   */
+  public function register_post_type() {
+    include_once( 'partials/canvas-post-type.php' );
+  }
+
+  /**
+   * Add taxonomies for custom post type
+   *
+   * @since    1.0.0
+   */
+  public function register_taxonomy() {
+    include_once( 'partials/canvas-taxonomies.php' );
+  }
+
 }
