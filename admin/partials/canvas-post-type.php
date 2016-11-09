@@ -17,7 +17,7 @@ $labels = array(
   'menu_name'          => __( 'Portfolio', 'canvas' ),
   'name_admin_bar'     => __( 'Projects', 'canvas' ),
   'add_new'            => __( 'Add New', 'canvas' ),
-  'add_new_item'       => __( 'Add New Prpject', 'canvas' ),
+  'add_new_item'       => __( 'Add New Project', 'canvas' ),
   'edit_item'          => __( 'Edit Project', 'canvas' ),
   'new_item'           => __( 'New Project', 'canvas' ),
   'view_item'          => __( 'View Project', 'canvas' ),
@@ -26,6 +26,11 @@ $labels = array(
   'not_found_in_trash' => __( 'No projects found in trash', 'canvas' ),
   'all_items'          => __( 'Projects', 'canvas' )
 );
+
+$supports = array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' );
+if ( get_option( $this->plugin_name )['comments'] ) {
+  array_push( $supports, 'comments' );
+}
 
 $args = array(
   'labels'             => $labels,
@@ -41,7 +46,7 @@ $args = array(
   'hierarchical'       => false,
   'menu_position'      => 20,
   'menu_icon'          => 'dashicons-portfolio',
-  'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
+  'supports'           => $supports
 );
 
-register_post_type( 'canvas_portfolio', apply_filters( 'canvas_portfolio_post_type_args', $args ) );
+register_post_type( $this->post_type_slug, apply_filters( 'canvas_portfolio_post_type_args', $args ) );

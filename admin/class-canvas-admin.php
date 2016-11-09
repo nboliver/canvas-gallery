@@ -41,6 +41,15 @@ class Canvas_Admin {
   private $version;
 
   /**
+   * The custom post type slug.
+   *
+   * @since    1.0.0
+   * @access   private
+   * @var      string    $version    The current version of this plugin.
+   */
+  private $post_type_slug = 'canvas_portfolio';
+
+  /**
    * Initialize the class and set its properties.
    *
    * @since    1.0.0
@@ -83,36 +92,27 @@ class Canvas_Admin {
    * @since    1.0.0
    */
   public function enqueue_scripts() {
-
-    /**
-     * This function is provided for demonstration purposes only.
-     *
-     * An instance of this class should be passed to the run() function
-     * defined in Canvas_Loader as all of the hooks are defined
-     * in that particular class.
-     *
-     * The Canvas_Loader will then create the relationship
-     * between the defined hooks and the functions defined in this
-     * class.
-     */
+    // Media dependencies
+    wp_enqueue_media();
 
     wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/canvas-admin.js', array( 'jquery' ), $this->version, false );
 
   }
 
-    /**
-   * Register the plugin options page.
+  /**
+   * Register the plugin settings page
    *
    * @since    1.0.0
    */
-  public function add_options_page() {
+  public function add_settings_page() {
 
-    add_options_page( 
-      'Canvas Gallery Setup', 
-      'Canvas', 
+    add_submenu_page(
+      'edit.php?post_type=' . $this->post_type_slug,
+      'Canvas Portfolio Settings',
+      'Settings',
       'manage_options', 
-      $this->plugin_name, 
-      array( $this, 'display_plugin_setup_page' )
+      'settings', 
+      array( $this, 'display_plugin_settings_page' )
     );
 
   }
@@ -126,19 +126,43 @@ class Canvas_Admin {
   public function add_action_links( $links ) {
 
     $settings_link = array(
-      '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_name ) . '">' . __('Settings', $this->plugin_name) . '</a>',
+      '<a href="' . admin_url( 'edit.php?post_type=' . $this->post_type_slug . '&page=settings' ) . '">' . __('Settings', $this->plugin_name) . '</a>',
     );
-    return array_merge(  $settings_link, $links );
+    return array_merge( $settings_link, $links );
 
   }
 
   /**
-   * Render the settings page for the plugin.
+   * Render the settings page for the plugin
    *
    * @since    1.0.0
    */
-  public function display_plugin_setup_page() {
+  public function display_plugin_settings_page() {
     include_once( 'partials/canvas-admin-display.php' );
+  }
+
+  /**
+   *
+   * admin/class-wp-cbf-admin.php
+   *
+   **/
+  public function update_settings() {
+    register_setting( $this->plugin_name, $this->plugin_name, array( $this, 'validate_settings' ) );
+  }
+
+  /**
+   *
+   * Validate plugin settings
+   *
+   **/
+  public function validate_settings( $input ) {
+    // All checkboxes inputs      
+    $valid = array();
+
+    //Cleanup
+    $valid['comments'] = ( isset( $input['comments'] ) && !empty( $input['comments'] ) ) ? 1 : 0;
+
+    return $valid;
   }
 
   /**
@@ -157,6 +181,34 @@ class Canvas_Admin {
    */
   public function register_taxonomy() {
     include_once( 'partials/canvas-taxonomies.php' );
+  }
+
+  /**
+   * Renders the gallery meta box.
+   *
+   * @since 0.1.0
+   */
+  public function add_meta_boxes() {
+    $screens = array( $this->post_type_slug );
+
+    foreach ( $screens as $screen ) {
+      add_meta_box(
+        $this->plugin_name . '_gallery',
+        'Project Images',
+        array( $this, 'display_images_metabox' ),
+        $screen,
+        'advanced'
+      );
+    }
+  }
+
+  /**
+   * Render the settings page for the plugin
+   *
+   * @since    1.0.0
+   */
+  public function display_images_metabox() {
+    include_once( 'partials/canvas-images-metabox.php' );
   }
 
 }
