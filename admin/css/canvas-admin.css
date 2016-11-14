@@ -1,4 +1,23 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+.canvas-gallery-images * {
+  box-sizing: border-box; }
+
+.canvas-gallery-image-grid {
+  overflow: hidden;
+  margin-left: -10px;
+  margin-bottom: 10px; }
+
+.canvas-gallery-item {
+  float: left;
+  width: 33.33333%;
+  max-width: 300px;
+  padding: 10px 0 0 10px;
+  cursor: move; }
+  .canvas-gallery-item-image {
+    padding-top: 100%;
+    background-size: cover;
+    background-position: 50% 50%; }
+
+.canvas-add-gallery-images-wrap {
+  text-align: right; }
+
+/*# sourceMappingURL=canvas-admin.css.map*/

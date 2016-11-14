@@ -1,9 +1,13 @@
-<p class="hide-if-no-js">
-  <a title="Add gallery images" href="#" id="add-gallery-images"><?php _e( 'Add gallery images', $this->plugin_name ); ?></a>
-</p>
-
 <?php 
+  $images = stripslashes( get_post_meta( get_the_ID(), $this->plugin_name . '_gallery_images', true ) );
+?>
+<script id="canvas-gallery-image-data" type="application/json">
+  <?php echo $images; ?>
+</script>
 
-$images = get_post_meta( get_the_ID(), $this->plugin_name . '_gallery', true );
+<div id="canvas-gallery-images" class="canvas-gallery-images">
+</div>
 
-var_dump($images);
+<p class="hide-if-no-js canvas-add-gallery-images-wrap">
+  <a title="Add gallery images" href="#" class="canvas-add-gallery-images"><?php _e( 'Manage project images', 'canvas' ); ?></a>
+</p>

@@ -1,3 +1,7 @@
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var autoprefixer = require('autoprefixer');
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+
 module.exports = [
   {
     name: "admin",
@@ -14,11 +18,27 @@ module.exports = [
           exclude: /node_modules/,
           loader: "babel",
           query: {
-            presets: ["es2015"]
+            presets: ["es2015", "react"]
           }
+        },
+        {
+          test: /\.scss$/,
+          loader: ExtractTextPlugin.extract('style?sourceMap', 'css!postcss-loader!sass?sourceMap'),
         }
       ]
-    }
+    },
+    postcss: [ 
+      autoprefixer({ browsers: ['last 3 versions'] }) 
+    ],
+    plugins: [
+      new ExtractTextPlugin("../css/canvas-admin.css"),
+      new BrowserSyncPlugin({
+        files: ['*.php'],
+        host: 'localhost',
+        port: 7788,
+        proxy: 'http://localhost:8888' // proxy apache server
+      })
+    ]
   },
   {
     name: "public",

@@ -92,10 +92,26 @@ class Canvas_Admin {
    * @since    1.0.0
    */
   public function enqueue_scripts() {
-    // Media dependencies
+    // WP Media dependencies
     wp_enqueue_media();
 
-    wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/canvas-admin.js', array( 'jquery' ), $this->version, false );
+    // Custom scripts
+    wp_register_script( 
+      $this->plugin_name, 
+      plugin_dir_url( __FILE__ ) . 'js/canvas-admin.js', 
+      array( 'jquery' ), 
+      $this->version, 
+      true 
+    );
+
+    $translations = array(
+      'gallery_manager_title' => __( 'Manage Project Gallery Images', 'canvas' ),
+      'gallery_manager_button' => __( 'Use selected images', 'canvas' ),
+    );
+
+    wp_localize_script( $this->plugin_name, 'canvas_l10n', $translations );
+
+    wp_enqueue_script( $this->plugin_name );
 
   }
 
@@ -106,6 +122,7 @@ class Canvas_Admin {
    */
   public function add_settings_page() {
 
+    // TODO: translate this
     add_submenu_page(
       'edit.php?post_type=' . $this->post_type_slug,
       'Canvas Portfolio Settings',
@@ -194,7 +211,7 @@ class Canvas_Admin {
     foreach ( $screens as $screen ) {
       add_meta_box(
         $this->plugin_name . '_gallery',
-        'Project Images',
+        __ ( 'Project Images', 'canvas' ),
         array( $this, 'display_images_metabox' ),
         $screen,
         'advanced'
@@ -209,6 +226,22 @@ class Canvas_Admin {
    */
   public function display_images_metabox() {
     include_once( 'partials/canvas-images-metabox.php' );
+  }
+
+  /**
+   * Save gallery images to post meta
+   *
+   * @param int $post_id The ID of the post with which we're currently working.
+   * @since 1.0.0
+   */
+  public function save_gallery_meta( $post_id ) {
+    if ( isset( $_REQUEST['canvas-gallery-selected-images'] ) ) {
+      update_post_meta( 
+        $post_id, 
+        $this->plugin_name . '_gallery_images', 
+        sanitize_text_field( wp_slash( $_REQUEST['canvas-gallery-selected-images'] ) )
+      );
+    }
   }
 
 }
