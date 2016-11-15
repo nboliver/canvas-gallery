@@ -74,6 +74,7 @@ class Canvas {
     $this->load_dependencies();
     $this->set_locale();
     $this->define_admin_hooks();
+    $this->register_templates();
     $this->define_public_hooks();
 
   }
@@ -112,6 +113,11 @@ class Canvas {
      * The class responsible for defining all actions that occur in the admin area.
      */
     require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-canvas-admin.php';
+
+    /**
+     * The class responsible for setting up page templates.
+     */
+    require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/includes/class-canvas-page-templates.php';
 
     /**
      * The class responsible for defining all actions that occur in the public-facing
@@ -163,14 +169,29 @@ class Canvas {
     $this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
 
     // Add post type & taxonomies
+    // TODO: Break this out into separate class
     $this->loader->add_action( 'init', $plugin_admin, 'register_post_type' );
     $this->loader->add_action( 'init', $plugin_admin, 'register_taxonomy' );
 
     // Add metaboxes to projects
+    // TODO Break out generic metabox to class and specific metaboxes to child classes
     $this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'add_meta_boxes' );
 
     // Save metabox
     $this->loader->add_action( 'save_post', $plugin_admin, 'save_gallery_meta' );
+  }
+
+  /**
+   * Register page templates used by the plugin.
+   *
+   * @since    1.0.0
+   * @access   private
+   */
+  private function register_templates() {
+
+    $page_templates = new Canvas_Page_Templates( $this->get_plugin_name(), $this->get_version() );
+
+    $this->loader->add_action( 'plugins_loaded', $page_templates, 'init_templates' );
   }
 
   /**
