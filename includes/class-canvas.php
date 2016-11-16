@@ -58,6 +58,15 @@ class Canvas {
   protected $version;
 
   /**
+   * The custom post types used by the plugin.
+   *
+   * @since    1.0.0
+   * @access   protected
+   * @var      array    $post_type    Custom post type settings.
+   */
+  protected $post_type;
+
+  /**
    * Define the core functionality of the plugin.
    *
    * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -70,6 +79,9 @@ class Canvas {
 
     $this->plugin_name = 'canvas';
     $this->version = '1.0.0';
+    $this->post_type = array(
+      'slug' => 'canvas_portfolio',
+    );
 
     $this->load_dependencies();
     $this->set_locale();
@@ -155,7 +167,7 @@ class Canvas {
    */
   private function define_admin_hooks() {
 
-    $plugin_admin = new Canvas_Admin( $this->get_plugin_name(), $this->get_version() );
+    $plugin_admin = new Canvas_Admin( $this->get_plugin_name(), $this->get_version(), $this->post_type );
 
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -207,6 +219,9 @@ class Canvas {
 
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+    // Template hooks
+    $this->loader->add_action( 'canvas_render_projects_index', $plugin_public, 'render_projects_index' );
 
   }
 

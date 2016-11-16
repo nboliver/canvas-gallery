@@ -41,13 +41,14 @@ class Canvas_Admin {
   private $version;
 
   /**
-   * The custom post type slug.
+   * The custom post types used by the plugin.
+   *
    *
    * @since    1.0.0
    * @access   private
-   * @var      string    $version    The current version of this plugin.
+   * @var      array    $post_type    Custom post type settings.
    */
-  private $post_type_slug = 'canvas_portfolio';
+  private $post_type;
 
   /**
    * Initialize the class and set its properties.
@@ -56,10 +57,11 @@ class Canvas_Admin {
    * @param    string    $plugin_name       The name of this plugin.
    * @param    string    $version    The version of this plugin.
    */
-  public function __construct( $plugin_name, $version ) {
+  public function __construct( $plugin_name, $version, $post_type ) {
 
     $this->plugin_name = $plugin_name;
     $this->version = $version;
+    $this->post_type = $post_type;
 
   }
 
@@ -70,19 +72,13 @@ class Canvas_Admin {
    */
   public function enqueue_styles() {
 
-    /**
-     * This function is provided for demonstration purposes only.
-     *
-     * An instance of this class should be passed to the run() function
-     * defined in Canvas_Loader as all of the hooks are defined
-     * in that particular class.
-     *
-     * The Canvas_Loader will then create the relationship
-     * between the defined hooks and the functions defined in this
-     * class.
-     */
-
-    wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/canvas-admin.css', array(), $this->version, 'all' );
+    wp_enqueue_style(
+      $this->plugin_name, 
+      plugin_dir_url( __FILE__ ) . 'css/canvas-admin.css', 
+      array(), 
+      $this->version, 
+      'all' 
+    );
 
   }
 
@@ -124,7 +120,7 @@ class Canvas_Admin {
 
     // TODO: translate this
     add_submenu_page(
-      'edit.php?post_type=' . $this->post_type_slug,
+      'edit.php?post_type=' . $this->post_type['slug'],
       'Canvas Portfolio Settings',
       'Settings',
       'manage_options', 
@@ -143,7 +139,7 @@ class Canvas_Admin {
   public function add_action_links( $links ) {
 
     $settings_link = array(
-      '<a href="' . admin_url( 'edit.php?post_type=' . $this->post_type_slug . '&page=settings' ) . '">' . __('Settings', $this->plugin_name) . '</a>',
+      '<a href="' . admin_url( 'edit.php?post_type=' . $this->post_type['slug'] . '&page=settings' ) . '">' . __('Settings', $this->plugin_name) . '</a>',
     );
     return array_merge( $settings_link, $links );
 
@@ -206,7 +202,7 @@ class Canvas_Admin {
    * @since 0.1.0
    */
   public function add_meta_boxes() {
-    $screens = array( $this->post_type_slug );
+    $screens = array( $this->post_type['slug'] );
 
     foreach ( $screens as $screen ) {
       add_meta_box(

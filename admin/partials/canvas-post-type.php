@@ -49,4 +49,4 @@ $args = array(
   'supports'           => $supports
 );
 
-register_post_type( $this->post_type_slug, apply_filters( 'canvas_portfolio_post_type_args', $args ) );
+register_post_type( $this->post_type['slug'], apply_filters( 'canvas_portfolio_post_type_args', $args ) );
