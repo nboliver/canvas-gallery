@@ -39,7 +39,8 @@ $args = array(
   'show_tagcloud'     => false,
   'hierarchical'      => true,
   'query_var'         => true,
-  'rewrite'           => array( 'slug' => 'portfolio-category', 'with_front' => false, 'hierarchical' => true )
+  'rewrite'           => array( 'slug' => 'portfolio-category', 'with_front' => false, 'hierarchical' => true ),
+  'show_in_rest'      => true,
 );
 
 register_taxonomy( 'portfolio-category', 'canvas_portfolio', $args );

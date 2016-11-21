@@ -21453,6 +21453,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
@@ -21511,7 +21513,7 @@
 	  }, {
 	    key: '_renderMediaUploader',
 	    value: function _renderMediaUploader() {
-	      // Frame already exists, so open it
+	      // Frame already exists, so open it and bail
 	      if (this.frame !== undefined) {
 	        this.frame.open();
 	
@@ -21582,6 +21584,7 @@
 	
 	          // Build new images array based on sort order
 	          sortedIds.forEach(function (id) {
+	            // TODO switch to native .find
 	            var image = _.find(_this4.state.images, function (image) {
 	              return image.id === id;
 	            });
@@ -21599,12 +21602,11 @@
 	    key: 'render',
 	    value: function render() {
 	      var galleryData = JSON.stringify(this.state.images);
-	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: this.gridClass },
 	        this.state.images.map(function (image) {
-	          return _react2.default.createElement(_MetaboxGalleryItem2.default, { key: image.id, image: image });
+	          return _react2.default.createElement(_MetaboxGalleryItem2.default, _extends({ key: image.id }, image));
 	        }),
 	        _react2.default.createElement('input', { type: 'hidden', id: 'canvas-gallery-selected-images', name: 'canvas-gallery-selected-images', value: galleryData })
 	      );
@@ -21653,7 +21655,7 @@
 	    var _this = _possibleConstructorReturn(this, (MetaboxGalleryItem.__proto__ || Object.getPrototypeOf(MetaboxGalleryItem)).call(this, props));
 	
 	    _this.imageStyle = {
-	      backgroundImage: 'url(' + _this.props.image.url + ')'
+	      backgroundImage: 'url(' + _this.props.sizes.medium.url + ')'
 	    };
 	    return _this;
 	  }
@@ -21663,7 +21665,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'canvas-gallery-item', 'data-id': this.props.image.id },
+	        { className: 'canvas-gallery-item', 'data-id': this.props.id },
 	        _react2.default.createElement('div', { className: 'canvas-gallery-item-image', style: this.imageStyle })
 	      );
 	    }

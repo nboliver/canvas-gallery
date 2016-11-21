@@ -12,6 +12,6 @@
 
 get_header(); ?>
 
-
+  <?php do_action( 'canvas_render_projects_index' ); ?>
 
 <?php get_footer(); ?>

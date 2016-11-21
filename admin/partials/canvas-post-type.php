@@ -45,6 +45,7 @@ $args = array(
   'has_archive'        => true,
   'hierarchical'       => false,
   'menu_position'      => 20,
+  'show_in_rest'       => true,
   'menu_icon'          => 'dashicons-portfolio',
   'supports'           => $supports
 );

@@ -167,7 +167,7 @@ class Canvas {
    */
   private function define_admin_hooks() {
 
-    $plugin_admin = new Canvas_Admin( $this->get_plugin_name(), $this->get_version(), $this->post_type );
+    $plugin_admin = new Canvas_Admin( $this->get_plugin_name(), $this->get_version(), $this->get_post_type() );
 
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
     $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -215,7 +215,7 @@ class Canvas {
    */
   private function define_public_hooks() {
 
-    $plugin_public = new Canvas_Public( $this->get_plugin_name(), $this->get_version() );
+    $plugin_public = new Canvas_Public( $this->get_plugin_name(), $this->get_version(), $this->get_post_type() );
 
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -263,6 +263,16 @@ class Canvas {
    */
   public function get_version() {
     return $this->version;
+  }
+
+  /**
+   * Retrieve the post type settings of the plugin.
+   *
+   * @since     1.0.0
+   * @return    array    The post type settings.
+   */
+  public function get_post_type() {
+    return $this->post_type;
   }
 
 }

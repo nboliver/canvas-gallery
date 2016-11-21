@@ -28,7 +28,7 @@ export default class MetaboxGallery extends Component {
   }
 
   _renderMediaUploader() {
-    // Frame already exists, so open it
+    // Frame already exists, so open it and bail
     if (this.frame !== undefined) {
       this.frame.open();
       
@@ -90,6 +90,7 @@ export default class MetaboxGallery extends Component {
 
         // Build new images array based on sort order
         sortedIds.forEach((id) => { 
+          // TODO switch to native .find
           const image = _.find(this.state.images, (image) => {
             return image.id === id;
           });
@@ -106,11 +107,10 @@ export default class MetaboxGallery extends Component {
 
   render() {
     const galleryData = JSON.stringify(this.state.images);
-
     return (
       <div className={this.gridClass}>
         {this.state.images.map((image) => (
-          <MetaboxGalleryItem key={image.id} image={image} />
+          <MetaboxGalleryItem key={image.id} {...image} />
         ))}
         <input type="hidden" id="canvas-gallery-selected-images" name="canvas-gallery-selected-images" value={galleryData} />
       </div>

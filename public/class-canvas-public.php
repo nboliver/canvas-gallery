@@ -22,82 +22,122 @@
  */
 class Canvas_Public {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
+  /**
+   * The ID of this plugin.
+   *
+   * @since    1.0.0
+   * @access   private
+   * @var      string    $plugin_name    The ID of this plugin.
+   */
+  private $plugin_name;
 
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+  /**
+   * The version of this plugin.
+   *
+   * @since    1.0.0
+   * @access   private
+   * @var      string    $version    The current version of this plugin.
+   */
+  private $version;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
+  /**
+   * The custom post types used by the plugin.
+   *
+   *
+   * @since    1.0.0
+   * @access   private
+   * @var      array    $post_type    Custom post type settings.
+   */
+  private $post_type;
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+  /**
+   * Initialize the class and set its properties.
+   *
+   * @since    1.0.0
+   * @param      string    $plugin_name       The name of the plugin.
+   * @param      string    $version    The version of this plugin.
+   */
+  public function __construct( $plugin_name, $version, $post_type ) {
 
-	}
+    $this->plugin_name = $plugin_name;
+    $this->version = $version;
+    $this->post_type = $post_type;
 
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
+  }
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Canvas_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Canvas_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+  /**
+   * Register the stylesheets for the public-facing side of the site.
+   *
+   * @since    1.0.0
+   */
+  public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/canvas-public.css', array(), $this->version, 'all' );
+    wp_enqueue_style( 
+      $this->plugin_name, 
+      plugin_dir_url( __FILE__ ) . 'css/canvas-public.css', 
+      array(), 
+      $this->version, 
+      'all' 
+    );
 
-	}
+  }
 
-	/**
-	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
+  /**
+   * Register the JavaScript for the public-facing side.
+   *
+   * @since    1.0.0
+   */
+  public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Canvas_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Canvas_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
+    wp_enqueue_script( 
+      $this->plugin_name, 
+      plugin_dir_url( __FILE__ ) . 'js/canvas-public.js', 
+      array( 'jquery' ), 
+      $this->version, 
+      false 
+    );
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/canvas-public.js', array( 'jquery' ), $this->version, false );
+  }
 
-	}
+  /**
+   * Fetch initial projects
+   *
+   * @since    1.0.0
+   */
+  public function fetch_initial_projects() {
+
+    $transient_slug = 'canvas_initial_projects';
+    $posts = get_transient( $transient_slug );
+
+    if ( empty( $posts ) ) {
+      $response = wp_remote_get( get_site_url() . '/wp-json/wp/v2/types/' . $this->post_type );
+
+      if ( is_wp_error( $response ) ) {
+        return array();
+      }
+
+      $posts = json_decode( wp_remote_retrieve_body( $response ) );
+
+      if ( empty( $posts ) ) {
+        return array();
+      }
+
+      set_transient( $transient_slug, $posts, HOUR_IN_SECONDS );
+    }
+    
+    return $posts;
+
+  }
+
+  /**
+   * Register the JavaScript for the public-facing side.
+   *
+   * @since    1.0.0
+   */
+  public function render_projects_index() {
+
+    include_once( 'partials/canvas-projects-index.php' );
+
+  }
 
 }
