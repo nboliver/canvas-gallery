@@ -89,43 +89,21 @@ class Canvas_Public {
    */
   public function enqueue_scripts() {
 
-    wp_enqueue_script( 
+    wp_register_script( 
       $this->plugin_name, 
       plugin_dir_url( __FILE__ ) . 'js/canvas-public.js', 
       array( 'jquery' ), 
       $this->version, 
-      false 
+      true 
     );
 
-  }
+    $translations = array(
+      'post_type_slug' => $this->post_type['slug'],
+    );
 
-  /**
-   * Fetch initial projects
-   *
-   * @since    1.0.0
-   */
-  public function fetch_initial_projects() {
+    wp_localize_script( $this->plugin_name, $this->plugin_name, $translations );
 
-    $transient_slug = 'canvas_initial_projects';
-    $posts = get_transient( $transient_slug );
-
-    if ( empty( $posts ) ) {
-      $response = wp_remote_get( get_site_url() . '/wp-json/wp/v2/types/' . $this->post_type );
-
-      if ( is_wp_error( $response ) ) {
-        return array();
-      }
-
-      $posts = json_decode( wp_remote_retrieve_body( $response ) );
-
-      if ( empty( $posts ) ) {
-        return array();
-      }
-
-      set_transient( $transient_slug, $posts, HOUR_IN_SECONDS );
-    }
-    
-    return $posts;
+    wp_enqueue_script( $this->plugin_name );
 
   }
 
@@ -135,7 +113,7 @@ class Canvas_Public {
    * @since    1.0.0
    */
   public function render_projects_index() {
-
+    
     include_once( 'partials/canvas-projects-index.php' );
 
   }
