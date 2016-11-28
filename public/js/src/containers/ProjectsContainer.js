@@ -14,7 +14,6 @@ export default class ProjectsContainer extends Component {
   componentDidMount() {    
     projectApi.getProjects().then(projects => {
       this.setState({projects: projects});
-      console.log(this.state);
     });
   }
 

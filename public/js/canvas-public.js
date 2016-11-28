@@ -54,13 +54,13 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _ProjectsContainer = __webpack_require__(182);
+	var _ProjectsContainer = __webpack_require__(172);
 	
 	var _ProjectsContainer2 = _interopRequireDefault(_ProjectsContainer);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(173);
+	__webpack_require__(178);
 	
 	var portfolioIndex = document.getElementById('canvas-portfolio-index');
 	
@@ -21436,44 +21436,113 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 172 */,
-/* 173 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */
-/***/ function(module, exports) {
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var baseUrl = document.querySelectorAll('[rel="https://api.w.org/"]')[0].getAttribute('href');
-	var postTypeSlug = window.canvas.post_type_slug;
 	
-	var WP_URL = exports.WP_URL = baseUrl + 'wp/v2/' + postTypeSlug + '?_embed';
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _projectApi = __webpack_require__(173);
+	
+	var projectApi = _interopRequireWildcard(_projectApi);
+	
+	var _ProjectList = __webpack_require__(177);
+	
+	var _ProjectList2 = _interopRequireDefault(_ProjectList);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ProjectsContainer = function (_Component) {
+	  _inherits(ProjectsContainer, _Component);
+	
+	  function ProjectsContainer(props) {
+	    _classCallCheck(this, ProjectsContainer);
+	
+	    var _this = _possibleConstructorReturn(this, (ProjectsContainer.__proto__ || Object.getPrototypeOf(ProjectsContainer)).call(this, props));
+	
+	    _this.state = {
+	      projects: []
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(ProjectsContainer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      projectApi.getProjects().then(function (projects) {
+	        _this2.setState({ projects: projects });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(_ProjectList2.default, { projects: this.state.projects });
+	    }
+	  }]);
+	
+	  return ProjectsContainer;
+	}(_react.Component);
+	
+	exports.default = ProjectsContainer;
 
 /***/ },
-/* 179 */
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getProjects = getProjects;
+	
+	var _isomorphicFetch = __webpack_require__(174);
+	
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+	
+	var _wpUrl = __webpack_require__(176);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function getProjects() {
+	  return (0, _isomorphicFetch2.default)(_wpUrl.WP_URL).then(function (response) {
+	    return response.json();
+	  });
+	}
+
+/***/ },
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// the whatwg-fetch polyfill installs the fetch() function
 	// on the global object (window or self)
 	//
 	// Return that as the export for use in Webpack, Browserify etc.
-	__webpack_require__(180);
+	__webpack_require__(175);
 	module.exports = self.fetch.bind(self);
 
 
 /***/ },
-/* 180 */
+/* 175 */
 /***/ function(module, exports) {
 
 	(function(self) {
@@ -21937,8 +22006,21 @@
 
 
 /***/ },
-/* 181 */,
-/* 182 */
+/* 176 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var baseUrl = document.querySelectorAll('[rel="https://api.w.org/"]')[0].getAttribute('href');
+	var postTypeSlug = window.canvas.post_type_slug;
+	
+	var WP_URL = exports.WP_URL = baseUrl + 'wp/v2/' + postTypeSlug + '?_embed';
+
+/***/ },
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21946,6 +22028,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -21953,100 +22037,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _projectApi = __webpack_require__(183);
+	var _ProjectListItem = __webpack_require__(183);
 	
-	var projectApi = _interopRequireWildcard(_projectApi);
-	
-	var _ProjectList = __webpack_require__(184);
-	
-	var _ProjectList2 = _interopRequireDefault(_ProjectList);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var ProjectsContainer = function (_Component) {
-	  _inherits(ProjectsContainer, _Component);
-	
-	  function ProjectsContainer(props) {
-	    _classCallCheck(this, ProjectsContainer);
-	
-	    var _this = _possibleConstructorReturn(this, (ProjectsContainer.__proto__ || Object.getPrototypeOf(ProjectsContainer)).call(this, props));
-	
-	    _this.state = {
-	      projects: []
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(ProjectsContainer, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-	
-	      projectApi.getProjects().then(function (projects) {
-	        _this2.setState({ projects: projects });
-	        console.log(_this2.state);
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(_ProjectList2.default, { projects: this.state.projects });
-	    }
-	  }]);
-	
-	  return ProjectsContainer;
-	}(_react.Component);
-	
-	exports.default = ProjectsContainer;
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.getProjects = getProjects;
-	
-	var _isomorphicFetch = __webpack_require__(179);
-	
-	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
-	
-	var _wpUrl = __webpack_require__(178);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function getProjects() {
-	  return (0, _isomorphicFetch2.default)(_wpUrl.WP_URL).then(function (response) {
-	    return response.json();
-	  });
-	}
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
+	var _ProjectListItem2 = _interopRequireDefault(_ProjectListItem);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22071,22 +22064,9 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'canvas-project-list' },
-	        this.props.projects.map(this.createProjectItem)
-	      );
-	    }
-	  }, {
-	    key: 'createProjectItem',
-	    value: function createProjectItem(project) {
-	      var images = project._embedded['wp:featuredmedia'];
-	      return _react2.default.createElement(
-	        'div',
-	        { key: project.id, className: 'canvas-project-list-item' },
-	        _react2.default.createElement('img', { src: images[0].media_details.sizes.medium_large.source_url }),
-	        _react2.default.createElement(
-	          'h4',
-	          null,
-	          project.title.rendered
-	        )
+	        this.props.projects.map(function (project) {
+	          return _react2.default.createElement(_ProjectListItem2.default, _extends({ key: project.id }, project));
+	        })
 	      );
 	    }
 	  }]);
@@ -22095,6 +22075,99 @@
 	}(_react.Component);
 	
 	exports.default = ProjectList;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ProjectListItem = function (_Component) {
+	  _inherits(ProjectListItem, _Component);
+	
+	  function ProjectListItem() {
+	    _classCallCheck(this, ProjectListItem);
+	
+	    return _possibleConstructorReturn(this, (ProjectListItem.__proto__ || Object.getPrototypeOf(ProjectListItem)).apply(this, arguments));
+	  }
+	
+	  _createClass(ProjectListItem, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          id = _props.id,
+	          title = _props.title;
+	
+	      var thumbUrl = this.getThumbnail(this.props._embedded['wp:featuredmedia']);
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { key: id, className: 'canvas-project-list-item' },
+	        _react2.default.createElement('img', { src: thumbUrl }),
+	        _react2.default.createElement(
+	          'h4',
+	          null,
+	          title.rendered
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'getThumbnail',
+	    value: function getThumbnail(images) {
+	      var thumbUrl = void 0;
+	
+	      if (images !== undefined) {
+	        (function () {
+	          var imageSizes = images[0].media_details.sizes;
+	          var sizes = ['medium_large', 'medium', 'thumbnail'];
+	
+	          sizes.some(function (size) {
+	            thumbUrl = imageSizes[size];
+	            return imageSizes.hasOwnProperty(size);
+	          });
+	
+	          thumbUrl = thumbUrl.source_url;
+	        })();
+	      } else {
+	        thumbUrl = 'http://placehold.it/350x350';
+	      }
+	
+	      return thumbUrl;
+	    }
+	  }]);
+	
+	  return ProjectListItem;
+	}(_react.Component);
+	
+	exports.default = ProjectListItem;
 
 /***/ }
 /******/ ]);
