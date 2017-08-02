@@ -12,4 +12,4 @@
  */
 ?>
 
-<div id=canvas-portfolio-index></div>
+<div id="canvas-portfolio-index" class="canvas-portfolio-index"></div>

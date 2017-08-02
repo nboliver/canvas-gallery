@@ -1,0 +1,24 @@
+.canvas-project-list {
+  @include grid-container;
+}
+
+.canvas-project-list-item {
+  @include grid-item;
+  @include col-width(12);
+
+  @include media($min: $screen-medium) {
+    @include col-width(6);
+  }
+
+  @include media($min: $screen-large) {
+    @include col-width(4);
+  }
+
+  @include media($min: $screen-xlarge) {
+    @include col-width(3);
+  }
+
+  @include media($min: $screen-xxlarge) {
+    @include col-width(2);
+  }
+}

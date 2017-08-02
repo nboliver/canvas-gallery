@@ -1,0 +1,73 @@
+/*----------  Media Queries  ----------*/
+
+@mixin media($max: false, $min: false) {
+  @if $max {
+    @if $min {
+      @media screen and (max-width: #{em($max - 1)}) and (min-width: #{em($min)}) { @content; }
+    } @else {
+      @media screen and (max-width: #{em($max - 1)}) { @content; }
+    }
+  } @else {
+    @media screen and (min-width: #{em($min)}) { @content; }
+  }
+}
+
+/*----------  Layout  ----------*/
+
+@mixin container {
+  width: 100%;
+  padding-right: $gutter-small;
+  padding-left: $gutter-small;
+
+  @include media($min: $screen-large) {
+    padding-right: $gutter;
+    padding-left: $gutter;
+  }
+}
+
+@mixin container-offset {
+  margin-right: -1 * $gutter-small;
+  margin-left: -1 * $gutter-small;
+
+  @include media($min: $screen-large) {
+    margin-right: -1 * $gutter;
+    margin-left: -1 * $gutter;
+  }
+}
+
+@mixin grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -1 * $gutter-small-half;
+  margin-left: -1 * $gutter-small-half;
+
+  @include media($min: $screen-large) {
+    margin-right: -1 * $gutter-half;
+    margin-left: -1 * $gutter-half;
+  }
+}
+
+@mixin grid-item {
+  flex: 0 1 auto;
+  margin-right: $gutter-small-half;
+  margin-left: $gutter-small-half;
+
+  @include media($min: $screen-large) {
+    margin-right: $gutter-half;
+    margin-left: $gutter-half;
+  }
+}
+
+@mixin col-width($columns, $full-bleed: false) {
+  $width: percentage($columns / 12);
+
+  @if $full-bleed {
+    width: $width;
+  } @else {
+    width: calc(#{$width} - #{$gutter-small});
+
+    @include media($min: $screen-large) {
+      width: calc(#{$width} - #{$gutter});
+    }
+  }
+}

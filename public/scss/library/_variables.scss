@@ -1,0 +1,21 @@
+$space-smallest: 0.5rem; // (8px)
+$space-smaller:  1rem;   // (16px)
+$space-small:    1.5rem; // (24px)
+$space:          2rem;   // (32px)
+$space-large:    2.5rem; // (40px)
+$space-larger:   4rem;   // (64px)
+$space-largest:  5rem;   // (80px)
+
+// gutters
+$gutter-small:       $space-smaller;
+$gutter-small-half:  $space-smaller / 2;
+
+$gutter:       $space;
+$gutter-half:  $space / 2;
+
+// breakpoints
+$screen-xxlarge: 1800;
+$screen-xlarge:  1200;
+$screen-large:   1024;
+$screen-medium:  768;
+$screen-small:   540;

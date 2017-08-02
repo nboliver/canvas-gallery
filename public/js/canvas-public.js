@@ -60,7 +60,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	__webpack_require__(178);
+	__webpack_require__(179);
 	
 	var portfolioIndex = document.getElementById('canvas-portfolio-index');
 	
@@ -21445,6 +21445,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
@@ -21493,9 +21495,24 @@
 	      });
 	    }
 	  }, {
+	    key: 'handleShowProject',
+	    value: function handleShowProject(id) {
+	      var project = this.state.projects.find(function (x) {
+	        return x.id === id;
+	      });
+	      console.log(project);
+	      this.setState({ activeProject: project });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(_ProjectList2.default, { projects: this.state.projects });
+	      var _this3 = this;
+	
+	      return _react2.default.createElement(_ProjectList2.default, _extends({}, this.state, {
+	        onShowProject: function onShowProject(id) {
+	          return _this3.handleShowProject(id);
+	        }
+	      }));
 	    }
 	  }]);
 	
@@ -21513,21 +21530,36 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getProjects = getProjects;
+	exports.getProject = exports.getProjects = undefined;
 	
 	var _isomorphicFetch = __webpack_require__(174);
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
-	var _wpUrl = __webpack_require__(176);
+	var _endpoints = __webpack_require__(183);
+	
+	var endpoints = _interopRequireWildcard(_endpoints);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function getProjects() {
-	  return (0, _isomorphicFetch2.default)(_wpUrl.WP_URL).then(function (response) {
+	  // TODO: Make this take query params for filtering?
+	  return (0, _isomorphicFetch2.default)(endpoints.projectsUrl).then(function (response) {
 	    return response.json();
 	  });
 	}
+	
+	function getProject(id) {
+	  return (0, _isomorphicFetch2.default)(endpoints.getProjectUrl(id)).then(function (response) {
+	    console.log(endpoints.getProjectUrl(id));
+	    return response.json();
+	  });
+	}
+	
+	exports.getProjects = getProjects;
+	exports.getProject = getProject;
 
 /***/ },
 /* 174 */
@@ -22006,20 +22038,7 @@
 
 
 /***/ },
-/* 176 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var baseUrl = document.querySelectorAll('[rel="https://api.w.org/"]')[0].getAttribute('href');
-	var postTypeSlug = window.canvas.post_type_slug;
-	
-	var WP_URL = exports.WP_URL = baseUrl + 'wp/v2/' + postTypeSlug + '?_embed';
-
-/***/ },
+/* 176 */,
 /* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22037,7 +22056,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ProjectListItem = __webpack_require__(183);
+	var _ProjectListItem = __webpack_require__(178);
 	
 	var _ProjectListItem2 = _interopRequireDefault(_ProjectListItem);
 	
@@ -22052,21 +22071,27 @@
 	var ProjectList = function (_Component) {
 	  _inherits(ProjectList, _Component);
 	
-	  function ProjectList() {
+	  function ProjectList(props) {
 	    _classCallCheck(this, ProjectList);
 	
-	    return _possibleConstructorReturn(this, (ProjectList.__proto__ || Object.getPrototypeOf(ProjectList)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (ProjectList.__proto__ || Object.getPrototypeOf(ProjectList)).call(this, props));
 	  }
 	
 	  _createClass(ProjectList, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'canvas-project-list' },
 	        this.props.projects.map(function (project) {
-	          return _react2.default.createElement(_ProjectListItem2.default, _extends({ key: project.id }, project));
-	        })
+	          return _react2.default.createElement(_ProjectListItem2.default, _extends({}, project, {
+	            key: project.id,
+	            onShowProject: _this2.props.onShowProject
+	          }));
+	        }),
+	        this.props.activeProject && this.props.activeProject.id
 	      );
 	    }
 	  }]);
@@ -22078,16 +22103,6 @@
 
 /***/ },
 /* 178 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22122,6 +22137,8 @@
 	  _createClass(ProjectListItem, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var _props = this.props,
 	          id = _props.id,
 	          title = _props.title;
@@ -22130,7 +22147,9 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        { key: id, className: 'canvas-project-list-item' },
+	        { key: id, className: 'canvas-project-list-item', onClick: function onClick() {
+	            _this2.props.onShowProject(id);
+	          } },
 	        _react2.default.createElement('img', { src: thumbUrl }),
 	        _react2.default.createElement(
 	          'h4',
@@ -22168,6 +22187,36 @@
 	}(_react.Component);
 	
 	exports.default = ProjectListItem;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var WP_URL = document.querySelectorAll('[rel="https://api.w.org/"]')[0].getAttribute('href');
+	var postTypeSlug = window.canvas.post_type_slug;
+	
+	var projectsUrl = WP_URL + 'wp/v2/' + postTypeSlug + '?_embed';
+	
+	function getProjectUrl(id) {
+	  return WP_URL + 'wp/v2/' + postTypeSlug + '/' + id + '/?_embed';
+	}
+	
+	exports.projectsUrl = projectsUrl;
+	exports.getProjectUrl = getProjectUrl;
 
 /***/ }
 /******/ ]);

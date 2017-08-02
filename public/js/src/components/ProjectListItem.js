@@ -6,7 +6,7 @@ export default class ProjectListItem extends Component {
     const thumbUrl = this.getThumbnail(this.props._embedded['wp:featuredmedia']);
 
     return (
-      <div key={id} className="canvas-project-list-item">
+      <div key={id} className="canvas-project-list-item" onClick={() => { this.props.onShowProject(id) }}>
         <img src={thumbUrl} />
         <h4>{title.rendered}</h4>
       </div>
@@ -15,7 +15,7 @@ export default class ProjectListItem extends Component {
 
   getThumbnail(images) {
     let thumbUrl;
-    
+
     if (images !== undefined) {
       const imageSizes = images[0].media_details.sizes;
       const sizes = ['medium_large', 'medium', 'thumbnail'];
@@ -25,8 +25,7 @@ export default class ProjectListItem extends Component {
         return imageSizes.hasOwnProperty(size);
       });
 
-      thumbUrl = thumbUrl.source_url
-      
+      thumbUrl = thumbUrl.source_url;
     } else {
       thumbUrl = 'http://placehold.it/350x350';
     }

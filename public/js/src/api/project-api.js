@@ -1,6 +1,19 @@
 import fetch from 'isomorphic-fetch';
-import { WP_URL } from '../wp-url';
+import * as endpoints from '../endpoints';
 
-export function getProjects() {
-  return fetch(WP_URL).then(response => response.json());
+function getProjects() {
+  // TODO: Make this take query params for filtering?
+  return fetch(endpoints.projectsUrl).then(response => response.json());
 }
+
+function getProject(id) {
+  return fetch(endpoints.getProjectUrl(id)).then((response) => {
+    console.log(endpoints.getProjectUrl(id));
+    return response.json();
+  });
+}
+
+export {
+  getProjects,
+  getProject,
+};

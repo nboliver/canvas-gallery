@@ -1,6 +1,53 @@
-/**
- * All of the CSS for your public-facing functionality should be
- * included in this file.
- */
+/*----------  Media Queries  ----------*/
+/*----------  Layout  ----------*/
+.canvas-project-list {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-right: -0.5rem;
+  margin-left: -0.5rem; }
+  @media screen and (min-width: 64em) {
+    .canvas-project-list {
+      margin-right: -1rem;
+      margin-left: -1rem; } }
+
+.canvas-project-list-item {
+  -ms-flex: 0 1 auto;
+      flex: 0 1 auto;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  width: calc(100% - 1rem); }
+  @media screen and (min-width: 64em) {
+    .canvas-project-list-item {
+      margin-right: 1rem;
+      margin-left: 1rem; } }
+  @media screen and (min-width: 64em) {
+    .canvas-project-list-item {
+      width: calc(100% - 2rem); } }
+  @media screen and (min-width: 48em) {
+    .canvas-project-list-item {
+      width: calc(50% - 1rem); } }
+  @media screen and (min-width: 48em) and (min-width: 64em) {
+    .canvas-project-list-item {
+      width: calc(50% - 2rem); } }
+  @media screen and (min-width: 64em) {
+    .canvas-project-list-item {
+      width: calc(33.33333% - 1rem); } }
+  @media screen and (min-width: 64em) and (min-width: 64em) {
+    .canvas-project-list-item {
+      width: calc(33.33333% - 2rem); } }
+  @media screen and (min-width: 75em) {
+    .canvas-project-list-item {
+      width: calc(25% - 1rem); } }
+  @media screen and (min-width: 75em) and (min-width: 64em) {
+    .canvas-project-list-item {
+      width: calc(25% - 2rem); } }
+  @media screen and (min-width: 112.5em) {
+    .canvas-project-list-item {
+      width: calc(16.66667% - 1rem); } }
+  @media screen and (min-width: 112.5em) and (min-width: 64em) {
+    .canvas-project-list-item {
+      width: calc(16.66667% - 2rem); } }
 
 /*# sourceMappingURL=canvas-public.css.map*/
